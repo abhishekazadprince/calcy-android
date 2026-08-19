@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -30,6 +30,22 @@ jobs:
 
       - name: Install Buildozer
         run: pip install --upgrade buildozer
+
+      - name: Cache Buildozer global directory
+        uses: actions/cache@v4
+        with:
+          path: ~/.buildozer
+          key: buildozer-global-${{ hashFiles('calcy_android_ready_v22/buildozer.spec') }}
+          restore-keys: |
+            buildozer-global-
+
+      - name: Cache Buildozer app build directory
+        uses: actions/cache@v4
+        with:
+          path: calcy_android_ready_v22/.buildozer
+          key: buildozer-app-${{ hashFiles('calcy_android_ready_v22/buildozer.spec') }}
+          restore-keys: |
+            buildozer-app-
 
       - name: Build APK
         working-directory: calcy_android_ready_v22
