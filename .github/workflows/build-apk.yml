@@ -16,15 +16,23 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Build APK with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk python3-pip autoconf libtool \
+            pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev \
+            cmake libffi-dev libssl-dev build-essential ccache libltdl-dev
+
+      - name: Install Buildozer
+        run: pip install --upgrade buildozer
+
+      - name: Build APK
+        working-directory: calcy_android_ready_v22
+        run: buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: calcy-debug-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: calcy_android_ready_v22/bin/*.apk
