@@ -24,7 +24,3 @@ p4a.bootstrap = sdl2
 [buildozer]
 log_level = 2
 warn_on_root = 1
-
-[app:android]
-# Keep the first APK lean; add x86_64 later if emulator support is needed.
-android.archs = arm64-v8a
