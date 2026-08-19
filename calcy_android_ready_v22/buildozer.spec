@@ -7,7 +7,7 @@ source.include_exts = py,png,jpg,jpeg,kv,atlas,json,txt,ttf
 source.exclude_dirs = tests,__pycache__,.git,.github
 source.exclude_exts = pyc,pyo
 version = 1.5.0
-requirements = python3,kivy==2.3.1,pillow
+requirements = python3,kivy==2.3.1,pillow,charset-normalizer==2.1.1
 orientation = portrait
 fullscreen = 0
 
