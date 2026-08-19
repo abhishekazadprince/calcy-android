@@ -1,0 +1,224 @@
+from __future__ import annotations
+
+MANUAL_TEXT = r'''CALCY — मदद / USER MANUAL
+
+पहले यह समझिए: Calcy में आप differential equation लिखते हैं, उसका numerical solution निकालते हैं और फिर उसी solution को Graph, Table, Analysis और 3D में देखते हैं। Custom ODE इसका सबसे सीधा रास्ता है; SHM, Pendulum, Lorenz, Van der Pol और बाकी models उसी engine के ready-made examples हैं।
+
+CUSTOM ODE
+
+Custom ODE में first-order system की हर equation का RHS semicolon (;) से अलग लिखना है। जितनी equations हों, उतने ही initial values देने हैं।
+
+एक equation:
+    y₁' = f₁(t, y₁, k₁, k₂, …)
+
+Input:
+    f₁
+
+दो equations:
+    y₁' = y₂
+    y₂' = f₂(t, y₁, y₂, k₁, …)
+
+Input:
+    y₂; f₂
+
+तीन equations:
+    y₁' = y₂
+    y₂' = y₃
+    y₃' = f₃(t, y₁, y₂, y₃, k₁, …)
+
+Input:
+    y₂; y₃; f₃
+
+इसी तरह Calcy अधिकतम 16 coupled first-order equations रख सकता है:
+
+    y₁'  = f₁(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₂'  = f₂(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₃'  = f₃(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₄'  = f₄(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₅'  = f₅(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₆'  = f₆(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₇'  = f₇(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₈'  = f₈(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₉'  = f₉(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₀' = f₁₀(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₁' = f₁₁(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₂' = f₁₂(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₃' = f₁₃(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₄' = f₁₄(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₅' = f₁₅(t, y₁, y₂, …, y₁₆, k₁, …)
+    y₁₆' = f₁₆(t, y₁, y₂, …, y₁₆, k₁, …)
+
+Input में इन्हें इसी क्रम में semicolon से अलग करना होगा:
+    f₁; f₂; f₃; …; f₁₆
+
+Initial values भी उसी क्रम में होंगे:
+    y₁(0), y₂(0), y₃(0), …, y₁₆(0)
+
+Parameters में अधिकतम 16 named parameters रखे जा सकते हैं, जैसे:
+    k₁=1, k₂=2, g=9.81
+
+दूसरे या तीसरे order की equation भी पहले first-order form में लिखी जाती है। उदाहरण:
+
+    x'' + ω²x = 0
+
+को
+    y₁ = x,
+    y₂ = x'
+
+मानकर लिखेंगे:
+    y₂; -ω²*y₁
+
+इसलिए Custom ODE केवल पहले से दिए गए models को चलाने के लिए नहीं है; इसी जगह से अपनी नई coupled dynamical system बनाकर बाकी सभी views में देख सकते हैं।
+
+GRAPH
+
+Graph केवल picture नहीं है; यही numerical solution को खोजने की जगह है। Mouse drag से graph को pan करें, wheel से जितना चाहें zoom करें, और point पर click/tap करके उसी numerical sample को चुनें। नीचे sample, t और सभी y-values उसी चुने हुए point के अनुसार बदलते हैं। Table और 3D marker भी उसी sample से जुड़े रहते हैं। Reset View से केवल viewing window वापस आती है, numerical solution नहीं बदलता।
+
+Graph में Time Series, All States, Phase Portrait और Numerical Derivative जैसे views मिलते हैं।
+
+PHASE SPACE
+
+SHM में
+    x'' + ω²x = 0
+को
+    y₁=x,  y₂=v
+लिखने पर 3D में
+    (y₁,y₂,0)=(x,v,0)
+दिखता है। यह phase-space trajectory है, particle का literal x-y-z path नहीं।
+
+ω = 1 और suitable scaling में
+    x=A cos t,  v=-A sin t
+से
+    x²+v²=A²
+मिलता है, इसलिए circle आता है; उसके projection में वही familiar one-dimensional oscillation दिख सकती है।
+
+Lorenz में भी state-space coordinates होते हैं।
+    (y₁, y₂, y₃)
+दूसरी ओर Two Body और Ballistic जैसे models में जहाँ states actual position coordinates देते हैं, 3D को physical geometry के रूप में पढ़ना अधिक natural है।
+
+3D
+
+3D में dense whitish-blue sphere current numerical state को locate करता है। Sphere का size केवल visual है; इससे equation या solution नहीं बदलता। PLAY, RESET, TRAIL, AXES और Speed animation को control करते हैं। Camera को desktop पर drag और wheel से तथा touch device पर उपलब्ध touch gestures से बदला जा सकता है। Camera बदलने से numerical data नहीं बदलता।
+
+TABLE
+
+Table में numerical samples मिलते हैं। चुना हुआ sample Graph और 3D के current marker के साथ synchronized रहता है। Table को TXT या PDF में export किया जा सकता है।
+
+ANALYSIS
+
+Analysis numerical quantities का compact view है: sample count, domain, step, minimum, maximum, range, mean, RMS, final value और zero crossings आदि। Physical interpretation equation और state variables देखकर करनी चाहिए।
+
+READY-MADE MODELS
+
+SHM, Damped SHM, Pendulum, Lorenz, Van der Pol, Two Body, Ballistic और Brusselator ready-made examples हैं। Preset load करने के बाद उसकी equations, initial values और parameters को Solve screen पर देखकर बदला जा सकता है।
+
+HELP
+
+यह manual Help से पढ़ सकते हैं और TXT/PDF copy भी निकाल सकते हैं।
+
+मुख्य क्रम बस इतना है:
+    equation → numerical solution → Graph / Table / Analysis / 3D
+
+और सबसे जरूरी बात:
+    किसी state coordinate को physical position मानने से पहले देखिए कि उस coordinate का physics में वास्तविक अर्थ क्या है।
+
+
+CALCY — USER MANUAL (ENGLISH)
+
+Calcy takes a symbolic first-order ODE system, solves it numerically, and lets you inspect the same solution through Graph, Table, Analysis and 3D. Custom ODE is the primary entry point; the built-in models are presets built on the same numerical core.
+
+CUSTOM ODE
+
+Enter one right-hand-side expression for each state and separate them with semicolons. For N equations, enter N initial values.
+
+The supported first-order system is
+
+    y₁'  = f₁(t, y₁, …, yₙ, k₁, …)
+    y₂'  = f₂(t, y₁, …, yₙ, k₁, …)
+    ...
+    yₙ'  = fₙ(t, y₁, …, yₙ, k₁, …)
+
+with n = 1, 2, …, 16. Thus the largest supported system is
+
+    y₁', y₂', y₃', …, y₁₆'
+
+entered as
+
+    f₁; f₂; f₃; …; f₁₆
+
+with the corresponding initial vector
+
+    y₁(0), y₂(0), …, y₁₆(0).
+
+Up to 16 named parameters can be supplied. For example:
+
+    k₁=1, k₂=2, g=9.81
+
+A second-order equation is normally converted to first-order form. For
+
+    x'' + ω²x = 0
+
+use
+
+    y₁=x,   y₂=x'
+
+and enter
+
+    y₂; -ω²*y₁
+
+The same idea extends to third-, fourth-, and higher-order equations by introducing the required state variables.
+
+GRAPH
+
+The graph is an interactive numerical view, not just a static plot. Drag to pan, use the mouse wheel to zoom, and click or tap a point to select the corresponding numerical sample. The bottom cursor readout changes with that selected sample, and the selected sample is synchronized with the table and the 3D marker. Reset View restores the viewport without changing the numerical solution.
+
+Available graph views include Time Series, All States, Phase Portrait and Numerical Derivative.
+
+PHASE SPACE AND PHYSICAL SPACE
+
+For SHM,
+
+    x'' + ω²x = 0
+
+can be written as
+
+    y₁=x,   y₂=v.
+
+The 3D state-space display is then
+
+    (y₁,y₂,0)=(x,v,0).
+
+This is a phase-space trajectory, not the literal path of the particle in ordinary x-y-z space. For ω=1,
+
+    x=A cos t,   v=-A sin t
+
+gives
+
+    x²+v²=A²,
+
+so the phase-space trajectory is a circle. The familiar one-dimensional SHM curve is a projection of the same dynamical state.
+
+For Lorenz, (y₁,y₂,y₃) are dynamical state coordinates. For models such as Two Body and Ballistic, the state definition can instead contain physical position coordinates, so their 3D projection can be interpreted geometrically in physical space.
+
+3D
+
+The dense whitish-blue sphere marks the current numerical state. Its size is purely visual and never changes the equation or numerical solution. PLAY, RESET, TRAIL, AXES and Speed control the animation and display. Camera motion changes only the view.
+
+TABLE
+
+The table exposes the numerical samples and keeps the selected sample synchronized with Graph and 3D. Tables can be exported as TXT or PDF.
+
+ANALYSIS
+
+Analysis gives compact numerical diagnostics such as sample count, domain, step size, minima, maxima, range, mean, RMS, final value and approximate zero crossings. Interpretation still depends on what the state variables represent.
+
+BUILT-IN MODELS
+
+SHM, Damped SHM, Pendulum, Lorenz, Van der Pol, Two Body, Ballistic and Brusselator are ready-made presets. A preset can be loaded and its equations, initial values and parameters can then be edited in Solve.
+
+Calcy's central idea is simple:
+
+    equation → numerical solution → Graph / Table / Analysis / 3D
+
+Always identify the physical meaning of a state variable before interpreting its trajectory.
+'''

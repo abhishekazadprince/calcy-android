@@ -1,0 +1,13 @@
+CALCY V21
+
+Extract this ZIP so that main.py is directly inside the extracted folder.
+
+PowerShell:
+
+cd C:\Users\ADMIN\Desktop\calcy_android_ready_v21
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install "kivy[base]"
+python main.py
+
+Do not paste old pip output back into PowerShell. Only type the commands above.
