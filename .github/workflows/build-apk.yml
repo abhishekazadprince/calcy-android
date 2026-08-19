@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +30,7 @@ jobs:
 
       - name: Build APK
         working-directory: calcy_android_ready_v22
-        run: buildozer -v android debug
+        run: yes | buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
